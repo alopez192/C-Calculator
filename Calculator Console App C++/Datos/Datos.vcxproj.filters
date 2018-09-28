@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Collections">
+      <UniqueIdentifier>{9cb9b077-e34e-4640-ac93-314d0f7278d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Expression Evaluator">
+      <UniqueIdentifier>{22373c6b-5370-4082-bc1f-2b1c6dfb097d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Expression Evaluator">
+      <UniqueIdentifier>{67dcb2cd-83fc-44b6-adfd-5a350803954d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="double_linked_list.h">
+      <Filter>Header Files\Collections</Filter>
+    </ClInclude>
+    <ClInclude Include="double_linked_list_node.h">
+      <Filter>Header Files\Collections</Filter>
+    </ClInclude>
+    <ClInclude Include="single_node.h">
+      <Filter>Header Files\Collections</Filter>
+    </ClInclude>
+    <ClInclude Include="stack.h">
+      <Filter>Header Files\Collections</Filter>
+    </ClInclude>
+    <ClInclude Include="expression_evaluator.h">
+      <Filter>Header Files\Expression Evaluator</Filter>
+    </ClInclude>
+    <ClInclude Include="expression_operator.h">
+      <Filter>Header Files\Expression Evaluator</Filter>
+    </ClInclude>
+    <ClInclude Include="expression_handler.h">
+      <Filter>Header Files\Expression Evaluator</Filter>
+    </ClInclude>
+    <ClInclude Include="queue.h">
+      <Filter>Header Files\Collections</Filter>
+    </ClInclude>
+    <ClInclude Include="interfaz.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="control.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="digit.h">
+      <Filter>Header Files\Expression Evaluator</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="expression_evaluator.cpp">
+      <Filter>Source Files\Expression Evaluator</Filter>
+    </ClCompile>
+    <ClCompile Include="expression_operator.cpp">
+      <Filter>Source Files\Expression Evaluator</Filter>
+    </ClCompile>
+    <ClCompile Include="expression_handler.cpp">
+      <Filter>Source Files\Expression Evaluator</Filter>
+    </ClCompile>
+    <ClCompile Include="interfaz.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="control.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="digit.cpp">
+      <Filter>Source Files\Expression Evaluator</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
