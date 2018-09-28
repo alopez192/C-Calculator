@@ -39,10 +39,10 @@ public:
 
 	void ver_lista_valores();
 	void ver_cola_valores();
-	string clean_expression(string);
+	string clean_expression_22(string);
 
 	char get_expression_sign(char prev_exp_operator, char current_exp_operator);
-	void clean_expression_2(string infix_expression);
+	void clean_expression(string infix_expression);
 	void ver_pila_operadores();
 	void create_postfix();
 	void calcula_exp_pos();

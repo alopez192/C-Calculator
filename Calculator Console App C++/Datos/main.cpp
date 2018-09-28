@@ -26,7 +26,7 @@ int main(){
 	//ctr->proceso_exp_posfija();
 
 	auto exp_handler = new expression_handler();
-	exp_handler->clean_expression_2("(+-+----88+(--123)*-+------(10^+++--+++---2))^--++-345*-34");
+	exp_handler->clean_expression("(+-+----88+(--123)*-+------(10^+++--+++---2))^--++-345*-34");
 
 
 
