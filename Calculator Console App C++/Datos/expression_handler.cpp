@@ -207,8 +207,8 @@ double expression_handler::evaluate_expresion()
 	auto result = 0.0;
 	auto value_one = 0.0;
 	auto value_two = 0.0;
-	double_linked_list<double> numbers;
-	double_linked_list<char> operators;
+	double_linked_list<digit> numbers;
+	double_linked_list<digit> operators;
 	bool is_descending_eval = true;
 
 	while (!this->postfix_expression->is_empty())
@@ -216,11 +216,11 @@ double expression_handler::evaluate_expresion()
 		auto exp_digit = this->postfix_expression->dequeue();
 		if (exp_digit.is_numeric_value())
 		{
-			numbers.add_back(exp_digit.get_numeric_value());
+			numbers.add_back(exp_digit);
 		}
 		else
 		{
-			operators.add_back(exp_digit.get_exp_operator());
+			operators.add_back(exp_digit);
 		}
 	}
 
@@ -230,33 +230,34 @@ double expression_handler::evaluate_expresion()
 
 	if (operators.get_size() > 1 && back_operator != nullptr)
 	{
-		auto prev_back_operator = get_expression_operator(back_operator->get_prev()->get_data());
-		if (back_operator->get_data() == '-' && prev_back_operator.get_priority_exp() == 4)
+		auto prev_back_operator = get_expression_operator(back_operator->get_prev()->get_data().get_exp_operator());
+		if (back_operator->get_data().get_exp_operator() == '-' && prev_back_operator.get_priority_exp() == 4)
 		{
 			operators.delete_element(operators.get_size() - 1);
 			is_special_case = true;
 		}
-		else if (back_operator->get_data() == '-' && prev_back_operator.get_expresion_operator() == '*')
+		else if (back_operator->get_data().get_exp_operator() == '-' && prev_back_operator.get_expresion_operator() == '*')
 		{
 			is_special_case = true;
 		}
 	}
 
-	auto const is_times_expression = operators.find_element('*') != nullptr && operators.find_element('^') == nullptr && operators.find_element('/') == nullptr;
+	auto const is_times_expression = operators.find_element(digit(string(1, '*'), false)) != nullptr && operators.find_element(digit(string(1, '^'), false)) == nullptr && operators.find_element(digit(string(1, '/'), false)) == nullptr;
 
 	while (!operators.is_empty())
 	{
-		auto exp_operator = get_expression_operator((is_descending_eval ? operators.get_back() : operators.get_front())->get_data());
+		auto current_operator = is_descending_eval ? operators.get_back() : operators.get_front();
+		auto exp_operator = get_expression_operator(current_operator->get_data().get_exp_operator());
 		auto exp_number = is_descending_eval ? numbers.get_back() : numbers.get_front();
 
 		if (exp_operator.get_priority_exp() == 1 && ((operators.get_size() == 1 && numbers.get_size() != 2) || operators.get_size() >= 2))
 		{
-			exp_number->set_data(execute_operation('*', exp_number->get_data(), exp_operator.get_expresion_operator() == '-' ? -1 : 1));
+			exp_number->set_data(digit(to_string(execute_operation('*', exp_number->get_data().get_numeric_value(), (exp_operator.get_expresion_operator() == '-' ? -1 : 1))), true));
 			operators.delete_element(is_descending_eval ? operators.get_size() - 1 : 0);
 			continue;
 		}
-		value_one = is_descending_eval ? exp_number->get_prev()->get_data() : exp_number->get_data();
-		value_two = is_descending_eval ? exp_number->get_data() : exp_number->get_next()->get_data();
+		value_one = is_descending_eval ? exp_number->get_prev()->get_data().get_numeric_value() : exp_number->get_data().get_numeric_value();
+		value_two = is_descending_eval ? exp_number->get_data().get_numeric_value() : exp_number->get_next()->get_data().get_numeric_value();
 
 		if (numbers.get_size() == 2 && operators.get_size() == 1 && exp_operator.get_priority_exp() == 1 && value_two < 0)
 		{
@@ -266,12 +267,20 @@ double expression_handler::evaluate_expresion()
 		{
 			result = execute_operation(exp_operator.get_expresion_operator(), value_one, value_two);
 		}
+
+		if(current_operator->get_data().is_negative_expression() 
+			&& (is_descending_eval ? exp_number->get_prev()->get_data().is_negative_expression() : exp_number->get_data().is_negative_expression()) 
+			&& exp_number->get_data().is_negative_expression())
+		{
+			is_special_case = true;
+		}
+
 		numbers.delete_element(is_descending_eval ? numbers.get_size() - 1 : 0);
 		numbers.delete_element(is_descending_eval ? numbers.get_size() - 1 : 0);
 		if (is_descending_eval)
-			numbers.add_back(result);
+			numbers.add_back(digit(to_string(result), true));
 		else
-			numbers.add_front(result);
+			numbers.add_front(digit(to_string(result), true));
 
 		is_descending_eval ? operators.delete_element(operators.get_size() - 1) : operators.delete_element(0);
 		is_descending_eval = !is_times_expression ? !is_descending_eval : true;
@@ -283,12 +292,12 @@ double expression_handler::evaluate_expresion()
 		auto const exp_number_1 = is_descending_eval ? (numbers.get_back() != nullptr ? numbers.get_back() : numbers.get_front()) : (numbers.get_front() != nullptr ? numbers.get_front() : numbers.get_back());
 		if (exp_number_1 != nullptr)
 		{
-			value_one = exp_number_1->get_data();
+			value_one = exp_number_1->get_data().get_numeric_value();
 
 			if (numbers.get_size() % 2 == 0)
 			{
 				auto const exp_number_2 = is_descending_eval ? numbers.get_back()->get_prev() : numbers.get_front()->get_next();
-				value_two = exp_number_2->get_data();
+				value_two = exp_number_2->get_data().get_numeric_value();
 				result += value_one + value_two;
 				numbers.delete_element(is_descending_eval ? numbers.get_size() - 1 : 0);
 				numbers.delete_element(is_descending_eval ? numbers.get_size() - 1 : 0);
@@ -379,8 +388,8 @@ void expression_handler::clean_expression(string infix_expression)
 				}
 				index = sub_index - 1;
 			}
-			auto back_digit = this->normalized_infix_expression->peek_back();
-			if (prev_exp_operator == '-' && continuous_less || has_prev_higher_operator || ( !back_digit.is_numeric_value() && back_digit.get_exp_operator() == '(')) //convert number to minus in case of any prev less operator
+			
+			if (prev_exp_operator == '-' && continuous_less || has_prev_higher_operator || (normalized_infix_expression->size() >0 && ( !normalized_infix_expression->peek_back().is_numeric_value() && normalized_infix_expression->peek_back().get_exp_operator() == '(')))
 			{
 				value.insert(0, 1, prev_exp_operator);
 				this->normalized_infix_expression->enqueue(digit(value, true, is_negative_expression));

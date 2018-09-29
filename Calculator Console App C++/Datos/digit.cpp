@@ -47,6 +47,10 @@ ostream & operator<<(ostream& outp, digit&T){
 	outp << T.value;
 	return outp;
 }
+bool operator==(const digit & digit1,const digit & digit2)
+{
+	return digit1.get_value() == digit2.get_value();
+}
 digit::~digit()
 {
 }

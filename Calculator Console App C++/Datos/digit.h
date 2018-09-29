@@ -19,4 +19,5 @@ public:
 	void set_value(string);
 	string get_value() const;
 	friend ostream & operator<<(ostream&,digit&); //salida
+	friend bool operator== (const digit & digit1,const digit&digit2);
 };

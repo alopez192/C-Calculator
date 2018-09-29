@@ -13,7 +13,7 @@ class queue
 public:
 	queue();
 	~queue();
-	int size();
+	int size() const;
 	void enqueue(T data);
 	T dequeue();
 	T peek_front();
@@ -42,9 +42,9 @@ queue<T>::~queue()
 }
 
 template <class T>
-int queue<T>::size()
+int queue<T>::size() const
 {
-	return this->size();
+	return this->count;
 }
 
 template <class T>

@@ -12,13 +12,13 @@ int main(){
 	cfi.FontWeight = FW_NORMAL;
 	SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), FALSE, &cfi);
 
-	string expressions[] = { "+-+--(---6*4)+(-5)^2","34-234", "28/7","31*23", "-3+-5","7*-3", "-8/-4","(34--2)+(21/-7)", "-(42/6)-+-3*4","-15+3*-+(9*4)", "(---8)^2+(-3)^3","-5^2-(-5)^2", "-+-+-0-(-+-+-7)^2" };
+	string expressions[] = {"-6*-3+(--2)^2", "+-+--(---6*4)+(-5)^2","34-234", "28/7","31*23", "-3+-5","7*-3", "-8/-4","(34--2)+(21/-7)", "-(42/6)-+-3*4","-15+3*-+(9*4)", "(---8)^2+(-3)^3","-5^2-(-5)^2", "-+-+-0-(-+-+-7)^2" };
 	expression_handler* exp_handler;
-	for (auto index =0; index < 1; index++)
+	for (const auto& expression : expressions)
 	{
-		cout << "Incoming expression: " << expressions[index] << endl;
-		exp_handler = new expression_handler(expressions[index]);
-		exp_handler->clean_expression(expressions[index]);
+		cout << "Incoming expression: " << expression << endl;
+		exp_handler = new expression_handler(expression);
+		exp_handler->clean_expression(expression);
 		cout << "Normalized incoming expression: " << endl;
 		exp_handler->get_normalized_expression().print();
 		exp_handler->create_postfix_expression();
