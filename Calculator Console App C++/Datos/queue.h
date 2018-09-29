@@ -16,7 +16,8 @@ public:
 	int size();
 	void enqueue(T data);
 	T dequeue();
-	T peek();
+	T peek_front();
+	T peek_back();
 	bool is_empty();
 	void print() const;
 	string to_string();
@@ -75,9 +76,15 @@ T queue<T>::dequeue()
 }
 
 template <class T>
-T queue<T>::peek()
+T queue<T>::peek_front()
 {
 	return this->front->get_data();
+}
+
+template<class T>
+inline T queue<T>::peek_back()
+{
+	return this->rear->get_data();
 }
 
 template <class T>
@@ -92,7 +99,7 @@ void queue<T>::print() const
 	single_node<T>* aux = front;
 	while (aux != nullptr)
 	{
-		cout << " " << aux->get_data();
+		cout << "_" << aux->get_data();
 		aux = aux->get_next();
 	}
 	cout << endl;
