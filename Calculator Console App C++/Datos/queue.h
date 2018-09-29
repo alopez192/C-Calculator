@@ -19,6 +19,7 @@ public:
 	T peek();
 	bool is_empty();
 	void print() const;
+	string to_string();
 };
 
 template <class T>
@@ -91,8 +92,24 @@ void queue<T>::print() const
 	single_node<T>* aux = front;
 	while (aux != nullptr)
 	{
-		cout << aux->get_data();
+		cout << " " << aux->get_data();
 		aux = aux->get_next();
 	}
+	cout << endl;
 }
+
+template <class T>
+string queue<T>::to_string()
+{
+	stringstream str_builder;
+	single_node<T>* aux = front;
+	while (aux != nullptr)
+	{
+		str_builder << aux->get_data();
+		aux = aux->get_next();
+	}
+	return str_builder.str();
+}
+
+
 

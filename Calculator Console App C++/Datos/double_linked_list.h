@@ -1,11 +1,11 @@
 #pragma once
 #include <iostream>
 #include "double_linked_list_node.h"
+#include <sstream>
 using namespace std;
 
 template<class T>
 class double_linked_list {
-private:
 	double_linked_list_node<T>* front;
 	double_linked_list_node<T>* back;
 	int size;
@@ -24,6 +24,7 @@ public:
 	T get(int index);
 	void print_forward() const;
 	void print_backward() const;
+	string to_string() const;
 	~double_linked_list();
 };
 
@@ -74,7 +75,7 @@ void double_linked_list<T>::add_front(T data)
 		new_node->set_next(front);
 		front = new_node;
 	}
-	size += 1;
+	size++;
 }
 
 template <class T>
@@ -94,7 +95,7 @@ void double_linked_list<T>::add_back(T data)
 		new_node->set_prev(back);
 		back = new_node;
 	}
-	size += 1;
+	size++;
 }
 
 template <class T>
@@ -105,59 +106,58 @@ void double_linked_list<T>::add_after(T data, int index)
 	{
 		if (index == 0)
 		{
-			add_front(node);
+			add_front(data);
 		}
 		else if (index == (get_size() - 1))
 		{
-			add_back(new_node);
+			add_back(data);
 		}
 		else
 		{
-			bool found = false;
-			int internal_index = 0;
-			double_linked_list_node<T>* aux = nullptr;
+			auto found = false;
+			auto internal_front_index = 0;
+			auto internal_back_index = size -1;
+			auto aux_front = front;
+			auto aux_back = back;
 
-			if (index < (get_size() / 2)) //is present of the first half of the list, search using front
+			while (!found)
 			{
-				aux = front;
-				while (!found)
+				if (internal_front_index == index && internal_back_index == index+1)
 				{
-					if (internal_index == index)
-					{
-						found = true;
-					}
-					else
-					{
-						internal_index++;
-						aux = aux->get_next();
-					}
+					found = true;
 				}
-			}
-			else //search using the back as the node should present on the second half
-			{
-				aux = back;
-				internal_index = get_size() - 1;
-				while (!found)
+				else
 				{
-					if (internal_index == index)
+					if(internal_front_index == index && internal_back_index != index+1)
 					{
-						found = true;
+						aux_back = aux_back->get_prev();
+						internal_back_index--;
 					}
-					else
+
+					if(internal_front_index != index)
 					{
-						internal_index--;
-						aux = aux->get_prev();
+						internal_front_index++;
+						aux_front = aux_front->get_next();
+						if (internal_back_index != index+1)
+						{
+							aux_back = aux_back->get_prev();
+							internal_back_index--;
+						}
 					}
 				}
 			}
 
 			if (found)
 			{
-				double_linked_list_node<T>* temp = aux;
+				double_linked_list_node<T>* temp = aux_front;
 				new_node->set_prev(temp);
 				new_node->set_next(temp->get_next());
-				aux->set_next(new_node);
-				temp->get_next()->set_prev(new_node);
+				aux_front->set_next(new_node);
+				temp->get_next()->set_prev(temp);
+
+				temp = aux_back;
+				temp->set_prev(new_node);
+				size++;
 			}
 		}
 	}
@@ -198,11 +198,58 @@ void double_linked_list<T>::delete_element(int index)
 		}
 		else
 		{
+			/*auto found = false;
+			auto internal_front_index = 0;
+			auto internal_back_index = size - 1;
+			auto aux_front = front;
+			auto aux_back = back;
+
+			while (!found)
+			{
+				if (internal_front_index == index && internal_back_index == index + 1)
+				{
+					found = true;
+				}
+				else
+				{
+					if (internal_front_index == index && internal_back_index != index + 1)
+					{
+						aux_back = aux_back->get_prev();
+						internal_back_index--;
+					}
+
+					if (internal_front_index != index)
+					{
+						internal_front_index++;
+						aux_front = aux_front->get_next();
+						if (internal_back_index != index)
+						{
+							aux_back = aux_back->get_prev();
+							internal_back_index--;
+						}
+					}
+				}
+			}
+
+			if (found)
+			{
+				double_linked_list_node<T>* temp = aux_front;
+				temp->set_prev(temp->get_prev());
+				temp->set_next(temp->get_next());
+				delete temp;
+				temp = aux_back;
+				temp->set_prev(temp->get_prev());
+				temp->set_next(temp->get_next());
+				delete temp;
+				size--;
+			}*/
+
+
 			bool found = false;
 			int internal_index = 0;
 			double_linked_list_node<T>* aux = nullptr;
 
-			if (index < (last_index / 2)) //is present of the first half of the list, search using front
+			if (index <= (last_index / 2)) //is present of the first half of the list, search using front
 			{
 				aux = front;
 				while (!found)
@@ -348,11 +395,10 @@ template <class T>
 void double_linked_list<T>::print_forward() const
 {
 	double_linked_list_node<T>* aux = front;
-	int index = 0;
+	auto index = 0;
 	while (aux != nullptr)
 	{
-		//cout << "[" << index++ << "] : " << aux->get_data() << endl;
-		cout << "[ " << aux->get_data() << " ]";
+		cout << aux->get_data();
 		aux = aux->get_next();
 	}
 }
@@ -361,13 +407,25 @@ template <class T>
 void double_linked_list<T>::print_backward() const
 {
 	double_linked_list_node<T>* aux = back;
-	int index = get_size() - 1;
+	auto index = get_size() - 1;
 	while (aux != nullptr)
 	{
-		//cout << "[" << index-- << "] :  " << aux->get_data() << endl;
 		cout<< "[ "<<aux->get_data() <<" ]";
 		aux = aux->get_prev();
 	}
+}
+
+template <class T>
+string double_linked_list<T>::to_string() const
+{
+	stringstream str_builder;
+	double_linked_list_node<T>* aux = front;
+	while (aux != nullptr)
+	{
+		str_builder << aux->get_data();
+		aux = aux->get_next();
+	}
+	return str_builder.str();
 }
 
 template <class T>

@@ -6,7 +6,6 @@ class double_linked_list_node
 	T data;
 	double_linked_list_node* next;
 	double_linked_list_node* prev;
-
 public:
 	double_linked_list_node(T data);
 	T get_data();
