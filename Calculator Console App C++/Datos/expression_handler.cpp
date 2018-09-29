@@ -211,6 +211,7 @@ double expression_handler::evaluate_expresion()
 	int index = 0;
 	auto numbers_count = 0;
 	auto exp_digit = postfix_expression->get_front();
+	auto is_less_expression = false;
 	while(!this->postfix_expression->is_empty() && this->postfix_expression->get_size()>2)
 	{
 		if(exp_digit->get_data().is_numeric_value())
@@ -222,7 +223,7 @@ double expression_handler::evaluate_expresion()
 			}
 			else
 			{
-				if (numbers_count == 3)
+				if (numbers_count > 2)
 				{
 					value_one = value_two;
 					value_two = exp_digit->get_data().get_numeric_value();
@@ -238,11 +239,29 @@ double expression_handler::evaluate_expresion()
 		{
 			if(is_complete_to_evaluate)
 			{
-				result = execute_operation(exp_digit->get_data().get_exp_operator(), value_one, value_two);
-				postfix_expression->add_after(digit(to_string(result), true), index);
-				postfix_expression->delete_element(index--);
-				postfix_expression->delete_element(index--);
-				postfix_expression->delete_element(index--);
+				is_less_expression = exp_digit->get_prev()->get_prev()->get_data().is_negative_expression() 
+										&& exp_digit->get_prev()->get_data().is_negative_expression() 
+										&& exp_digit->get_data().is_negative_expression()
+										&& exp_digit->get_next()!=nullptr
+										&& exp_digit->get_next()->get_data().is_negative_expression();
+				if(is_less_expression)
+				{
+					result = execute_operation(exp_digit->get_data().get_exp_operator(), value_one, value_two) * -1;
+					auto new_index = index + 1;
+					postfix_expression->add_after(digit(to_string(result), true), new_index);
+					postfix_expression->delete_element(new_index--);
+					postfix_expression->delete_element(new_index--);
+					postfix_expression->delete_element(new_index--);
+					postfix_expression->delete_element(new_index--);
+				}
+				else
+				{
+					result = execute_operation(exp_digit->get_data().get_exp_operator(), value_one, value_two);
+					postfix_expression->add_after(digit(to_string(result), true), index);
+					postfix_expression->delete_element(index--);
+					postfix_expression->delete_element(index--);
+					postfix_expression->delete_element(index--);
+				}
 				is_complete_to_evaluate = false;
 				exp_digit = this->postfix_expression->get_front();
 				index = 0;
@@ -272,14 +291,26 @@ void expression_handler::clean_expression(string infix_expression)
 {
 	this->normalized_infix_expression = new queue<digit>();//clean prev data
 	auto prev_exp_operator = ' ';
+	auto is_negative_expression = false;
+	auto continuous_less = false;
+	auto has_prev_higher_operator = false;
 	for (auto index = 0; index < (static_cast<int>(infix_expression.length())); index++)
 	{
 		const auto character = infix_expression[index];
-
 		if (!isdigit(character))
 		{
 			if ((character == '-' || character == '+'))
 			{
+				if (index == 0)
+				{
+					continuous_less = true;
+				}
+
+				if(index > 0 && !has_prev_higher_operator && (infix_expression[index-1] == '/' || infix_expression[index - 1] == '*'))
+				{
+					has_prev_higher_operator = true;
+				}
+				
 				if (prev_exp_operator != ' ')
 					prev_exp_operator = get_expression_sign(prev_exp_operator, character); //evaluate incoming operator against prev operator. Applies only for '-' or '+'
 				else
@@ -289,12 +320,30 @@ void expression_handler::clean_expression(string infix_expression)
 			}
 			else
 			{
-				if (prev_exp_operator != ' ')
+				if(index > 0 && (infix_expression[index-1] == '/' || infix_expression[index - 1] == '*' && character != '('  && ( character == '-' || prev_exp_operator == '-')))
 				{
-					this->normalized_infix_expression->enqueue(digit(string(1, prev_exp_operator), false));
+					prev_exp_operator = prev_exp_operator == ' ' ? character : prev_exp_operator;
+					continuous_less = true;
+					continue;
+				}
+
+				if ((prev_exp_operator == '-' && character == '(') || (character == ')' && is_negative_expression))
+				{
+					if(prev_exp_operator != ' ')
+						this->normalized_infix_expression->enqueue(digit(string(1, prev_exp_operator), false, true));
+					this->normalized_infix_expression->enqueue(digit(string(1, character), false, true));
+					is_negative_expression = character != ')';
+					prev_exp_operator = ' ';
+					continue;
+				}
+
+				if (prev_exp_operator != ' ' && character == '(')//if ((prev_exp_operator == '-' || prev_exp_operator == '+')  && character == '(')
+				{
+					this->normalized_infix_expression->enqueue(digit(string(1, prev_exp_operator),false, is_negative_expression));
 					prev_exp_operator = ' ';
 				}
-				this->normalized_infix_expression->enqueue(digit(string(1, character), false));
+
+				this->normalized_infix_expression->enqueue(digit(string(1, character), false,is_negative_expression));
 			}
 		}
 		else
@@ -313,17 +362,26 @@ void expression_handler::clean_expression(string infix_expression)
 				}
 				index = sub_index - 1;
 			}
-
-			if (prev_exp_operator == '-') //convert number to minus in case of any prev less operator
+			if (prev_exp_operator == '-' && continuous_less || has_prev_higher_operator) //convert number to minus in case of any prev less operator
 			{
 				value.insert(0, 1, prev_exp_operator);
-				this->normalized_infix_expression->enqueue(digit(value, true));
+				this->normalized_infix_expression->enqueue(digit(value, true, is_negative_expression));
+				prev_exp_operator = ' ';
+				has_prev_higher_operator = false;
+				continuous_less = false;
+			}
+			else if (prev_exp_operator == '-' && is_negative_expression) //convert number to minus in case of any prev less operator
+			{
+				this->normalized_infix_expression->enqueue(digit(value, true, true));
 				prev_exp_operator = ' ';
 			}
 			else
 			{
-				prev_exp_operator = ' ';
-				this->normalized_infix_expression->enqueue(digit(value, true));
+				if (prev_exp_operator != ' ') {
+					this->normalized_infix_expression->enqueue(digit(string(1, prev_exp_operator),false, is_negative_expression));
+					prev_exp_operator = ' ';
+				}
+				this->normalized_infix_expression->enqueue(digit(value, true, is_negative_expression));
 			}
 		}
 	}

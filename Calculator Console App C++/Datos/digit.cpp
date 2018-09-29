@@ -1,9 +1,15 @@
 #include"digit.h"
 
-digit::digit(const string value, const bool is_numeric){
+digit::digit(string value, bool is_numeric)
+{
 	this->value = value;
 	this->is_numeric = is_numeric;
-
+	this->is_part_negative_expression = false;
+}
+digit::digit(string value, bool is_numeric, bool is_negative_expression) {
+	this->value = value;
+	this->is_numeric = is_numeric;
+	this->is_part_negative_expression = is_negative_expression;
 }
 digit::digit(){
 	this->value = "";
@@ -25,6 +31,10 @@ double digit::get_numeric_value() const
 	if (this->is_numeric)
 		return stod(this->value);
 	return 0.0;
+}
+bool digit::is_negative_expression() const
+{
+	return this->is_part_negative_expression;
 }
 void digit::set_value(const string value){
 	this->value = value;
