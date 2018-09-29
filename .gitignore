@@ -5,3 +5,6 @@ Calculator Console App C++/.vs/CalculatorConsoleApp/v15/.suo
 *.idb
 *.tlog
 Calculator Console App C++/Debug/Calculator.ilk
+*.opendb
+Calculator Console App C++/.vs/CalculatorConsoleApp/v15/ipch/AutoPCH/aa9ab36b2974774c/EXPRESSION_HANDLER.ipch
+*.ipch
