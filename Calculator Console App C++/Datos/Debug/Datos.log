@@ -1,11 +1,4 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(387,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (Datos.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  digit.cpp
   main.cpp
-  interfaz.cpp
-  expression_operator.cpp
-  expression_handler.cpp
-c:\users\alopez\desktop\datos3\datos\expression_handler.cpp(201): warning C4018: '<': signed/unsigned mismatch
-  expression_evaluator.cpp
-  control.cpp
-  Generating Code...
-  Datos.vcxproj -> C:\Users\alopez\Desktop\Datos3\Debug\Calculator.exe
+c:\inetpub\wwwroot\github\c-calculator\calculator console app c++\datos\main.cpp(17): warning C4018: '<': signed/unsigned mismatch
+  Datos.vcxproj -> C:\inetpub\wwwroot\GitHub\C-Calculator\Calculator Console App C++\Debug\Calculator.exe

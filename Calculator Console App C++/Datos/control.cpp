@@ -3,7 +3,7 @@
 
 control::control() {
 	
-	expression_handl = new expression_handler(); 
+	expression_handl = new expression_handler(""); 
 
 }
 control::~control() {
@@ -62,7 +62,7 @@ void control::proceso_exp_posfija(){
 }
 
 void control::calcula_pos(){
-	this->expression_handl->calcula_exp_pos();
+	
 
 }
 void control::calcula_result(){

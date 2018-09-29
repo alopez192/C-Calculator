@@ -1,9 +1,18 @@
-c:\users\alopez\desktop\datos3\datos\debug\control.obj
-c:\users\alopez\desktop\datos3\datos\debug\digit.obj
-c:\users\alopez\desktop\datos3\datos\debug\expression_evaluator.obj
-c:\users\alopez\desktop\datos3\datos\debug\expression_handler.obj
-c:\users\alopez\desktop\datos3\datos\debug\expression_operator.obj
-c:\users\alopez\desktop\datos3\datos\debug\interfaz.obj
-c:\users\alopez\desktop\datos3\datos\debug\main.obj
-c:\users\alopez\desktop\datos3\datos\debug\vc141.idb
-c:\users\alopez\desktop\datos3\datos\debug\vc141.pdb
+c:\inetpub\wwwroot\github\c-calculator\calculator console app c++\datos\debug\vc141.pdb
+c:\inetpub\wwwroot\github\c-calculator\calculator console app c++\datos\debug\vc141.idb
+c:\inetpub\wwwroot\github\c-calculator\calculator console app c++\datos\debug\control.obj
+c:\inetpub\wwwroot\github\c-calculator\calculator console app c++\datos\debug\expression_evaluator.obj
+c:\inetpub\wwwroot\github\c-calculator\calculator console app c++\datos\debug\expression_handler.obj
+c:\inetpub\wwwroot\github\c-calculator\calculator console app c++\datos\debug\expression_operator.obj
+c:\inetpub\wwwroot\github\c-calculator\calculator console app c++\datos\debug\interfaz.obj
+c:\inetpub\wwwroot\github\c-calculator\calculator console app c++\datos\debug\main.obj
+c:\inetpub\wwwroot\github\c-calculator\calculator console app c++\datos\debug\digit.obj
+c:\inetpub\wwwroot\github\c-calculator\calculator console app c++\debug\calculator.ilk
+c:\inetpub\wwwroot\github\c-calculator\calculator console app c++\debug\calculator.exe
+c:\inetpub\wwwroot\github\c-calculator\calculator console app c++\debug\calculator.pdb
+c:\inetpub\wwwroot\github\c-calculator\calculator console app c++\datos\debug\calculator.tlog\cl.command.1.tlog
+c:\inetpub\wwwroot\github\c-calculator\calculator console app c++\datos\debug\calculator.tlog\cl.read.1.tlog
+c:\inetpub\wwwroot\github\c-calculator\calculator console app c++\datos\debug\calculator.tlog\cl.write.1.tlog
+c:\inetpub\wwwroot\github\c-calculator\calculator console app c++\datos\debug\calculator.tlog\link.command.1.tlog
+c:\inetpub\wwwroot\github\c-calculator\calculator console app c++\datos\debug\calculator.tlog\link.read.1.tlog
+c:\inetpub\wwwroot\github\c-calculator\calculator console app c++\datos\debug\calculator.tlog\link.write.1.tlog
